@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* =====================
+     ARKA JAIN BRAND COLORS — LIGHT THEME
+     ===================== */
+
+  /* Brand Palette (same tones, now on white) */
+  --brand-navy:       #1a237e;
+  --brand-navy-light: #283593;
+  --brand-navy-pale:  #e8eaf6;    /* very light navy tint for backgrounds */
+  --brand-maroon:     #8B0000;
+  --brand-maroon-light: #b71c1c;
+  --brand-maroon-pale:  #fce4e4;  /* very light maroon tint */
+  --brand-gold:       #d4920a;    /* slightly darkened for readability on white */
+  --brand-gold-bright: #FFB800;
+  --brand-gold-pale:  #fff8e1;    /* very light gold tint */
+
+  /* Sidebar stays dark navy (like real AJU nav bar) */
+  --sidebar-bg:       #1a237e;
+  --sidebar-hover:    #283593;
+  --sidebar-text:     rgba(255,255,255,0.75);
+  --sidebar-text-active: #FFB800;
+
+  /* Main backgrounds — white theme */
+  --bg-color:       #f0f4ff;     /* very faint blue-white */
+  --bg-surface:     #ffffff;
+  --bg-card:        #ffffff;
+  --bg-card-hover:  #f5f7ff;
+
+  /* Text */
+  --text-primary:   #1a1e3c;
+  --text-secondary: #4a5080;
+  --text-muted:     #8892b0;
+  --white: #ffffff;
+
+  /* Borders */
+  --border-color: #dde1f7;
+  --border-glow:  rgba(26, 35, 126, 0.3);
+
+  /* Glassmorphism (light) */
+  --glass-bg:     rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(26, 35, 126, 0.15);
+
+  /* Shadows — much lighter for white theme */
+  --shadow-sm: 0 2px 8px rgba(26, 35, 126, 0.07);
+  --shadow-md: 0 4px 20px rgba(26, 35, 126, 0.10);
+  --shadow-lg: 0 8px 40px rgba(26, 35, 126, 0.13);
+  --shadow-glow:      0 0 30px rgba(26, 35, 126, 0.12);
+  --shadow-glow-gold: 0 0 20px rgba(212, 146, 10, 0.15);
+
+  --transition:      all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --sidebar-width: 260px;
+}
+
+/* =====================
+   DARK THEME OVERRIDES
+   ===================== */
+[data-theme="dark"] {
+  --brand-navy:       #818cf8;  /* light indigo — readable on dark bg */
+  --brand-navy-light: #6366f1;
+  --brand-navy-pale:  #1e2654;
+  --brand-maroon:     #f87171;  /* light red — readable on dark bg */
+  --brand-maroon-pale:  #2a0a0a;
+  --brand-gold:       #fbbf24;  /* bright amber — readable on dark bg */
+  --brand-gold-pale:    #2a1f00;
+
+  --sidebar-bg:         #0f1535;
+  --sidebar-hover:      #1a237e;
+  --sidebar-text:       rgba(255,255,255,0.70);
+  --sidebar-text-active: #FFB800;
+
+  --bg-color:           #0d1117;
+  --bg-surface:         #161b27;
+  --bg-card:            #1c2236;
+  --bg-card-hover:      #212840;
+
+  --text-primary:       #e8eaf6;
+  --text-secondary:     #c5cae9;  /* brighter — labels are now legible */
+  --text-muted:         #7986cb;  /* brightened muted */
+  --white:              #ffffff;
+
+  --border-color:       #2a3160;
+  --border-glow:        rgba(100, 120, 255, 0.3);
+
+  --glass-bg:           rgba(22, 27, 39, 0.90);
+  --glass-border:       rgba(100, 120, 255, 0.15);
+
+  --shadow-sm:  0 2px 8px  rgba(0, 0, 0, 0.40);
+  --shadow-md:  0 4px 20px rgba(0, 0, 0, 0.50);
+  --shadow-lg:  0 8px 40px rgba(0, 0, 0, 0.60);
+  --shadow-glow:      0 0 30px rgba(100, 120, 255, 0.15);
+  --shadow-glow-gold: 0 0 20px rgba(212, 146, 10, 0.20);
+}
+
+[data-theme="dark"] body {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', 'Outfit', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #e8eaf6; }
+::-webkit-scrollbar-thumb { background: var(--brand-navy-light); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-gold-bright); }
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-lg);
+}
+
+/* =====================
+   GLOBAL DARK MODE TEXT FIXES
+   All hardcoded dark text colors in component CSS files
+   are caught here so they become readable in dark mode.
+   ===================== */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  color: var(--text-primary);
+  background: var(--bg-color);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Scrollbar dark track */
+[data-theme="dark"] ::-webkit-scrollbar-track { background: #0d1117; }
+
+/* Catch common hardcoded dark text colors that appear in
+   StudentInformation.css, AdminPanel.css, AdminLogin.css etc. */
+[data-theme="dark"] .si-main-header span,
+[data-theme="dark"] .sf-title-group h3,
+[data-theme="dark"] .form-section-title,
+[data-theme="dark"] .scd-section-header,
+[data-theme="dark"] .info-label,
+[data-theme="dark"] .info-value,
+[data-theme="dark"] .si-val,
+[data-theme="dark"] .si-val-text,
+[data-theme="dark"] .si-label,
+[data-theme="dark"] .sf-group label,
+[data-theme="dark"] .sf-photo-title,
+[data-theme="dark"] .sf-title-group p,
+[data-theme="dark"] .admin-header h1,
+[data-theme="dark"] .admin-subtitle,
+[data-theme="dark"] .tab-btn,
+[data-theme="dark"] .form-group label,
+[data-theme="dark"] .login-header h2,
+[data-theme="dark"] .login-header p,
+[data-theme="dark"] .input-box label,
+[data-theme="dark"] .ndf-breadcrumb,
+[data-theme="dark"] .admin-nav-link { color: var(--text-secondary); }
+
+[data-theme="dark"] .sf-table td,
+[data-theme="dark"] .marks-table td { color: var(--text-primary); }
+
+[data-theme="dark"] .tabs-nav { border-color: var(--border-color); }
+[data-theme="dark"] .save-section { border-color: var(--border-color); }
+[data-theme="dark"] .profile-img-editor { border-color: var(--border-color); }
+

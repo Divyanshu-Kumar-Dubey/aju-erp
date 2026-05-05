@@ -1,0 +1,149 @@
+.ndf-page-root {
+  min-height: calc(100vh - 64px);
+  padding: 2rem;
+  background: transparent;
+}
+
+.ndf-container-box {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.ndf-main-header {
+  padding: 1.5rem 2rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ndf-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ndf-header-left h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ndf-mandatory-note {
+  font-size: 0.85rem;
+  color: #e53e3e;
+  font-weight: 600;
+}
+
+.ndf-content-area {
+  padding: 2.5rem 2rem;
+}
+
+.ndf-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.ndf-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.ndf-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.ndf-label span {
+  color: #e53e3e;
+  margin-right: 0.2rem;
+}
+
+.ndf-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--border-color);
+  color: var(--text-primary);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #2d3748;
+  outline: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+.ndf-select:focus {
+  border-color: #008080;
+  box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.1);
+  background-color: var(--bg-surface);
+}
+
+.ndf-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.ndf-print-btn {
+  background: #008080;
+  color: white;
+  border: none;
+  padding: 0.85rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 128, 128, 0.2);
+}
+
+.ndf-print-btn:hover {
+  background: #006666;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 128, 128, 0.3);
+}
+
+.ndf-print-btn:active {
+  transform: translateY(0);
+}
+
+.ndf-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  color: #4a5568;
+}
+
+.ndf-breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ndf-breadcrumb-sep {
+  color: #a0aec0;
+}
+
+.ndf-breadcrumb-active {
+  color: #0056b3;
+  font-weight: 600;
+}

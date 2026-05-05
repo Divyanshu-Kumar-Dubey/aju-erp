@@ -1,0 +1,27 @@
+{
+  "name": "Arka Jain University ERP Portal",
+  "short_name": "AJU ERP",
+  "description": "Official student ERP portal for Arka Jain University — access your dashboard, attendance, academic records, fees, and more.",
+  "start_url": "/login",
+  "display": "standalone",
+  "background_color": "#1a237e",
+  "theme_color": "#1a237e",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education"],
+  "lang": "en-IN",
+  "dir": "ltr",
+  "orientation": "portrait"
+}

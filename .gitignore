@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment variables (contains API keys - never commit!)
+.env
+.env.local
+.env.production
+
+# Logs & temp files
+build-log.txt
+lint.txt
+lint-cmd.txt
+*.log
+
+# Editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,26 @@
+.swayam-banner {
+  position: fixed;
+  left: 0;
+  top: 60%;
+  transform: translateY(-50%);
+  background: white;
+  border: 1px solid var(--border-color);
+  border-left: none;
+  padding: 15px 5px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  box-shadow: var(--shadow-sm);
+  z-index: 900;
+}
+
+.swayam-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  font-weight: 700;
+  color: #0b519e;
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: Arial, sans-serif;
+}

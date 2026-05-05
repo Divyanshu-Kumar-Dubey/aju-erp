@@ -1,0 +1,16 @@
+# Robots.txt — Arka Jain University ERP Portal
+# Allow Google to crawl the public login page only.
+# All student/admin pages are private and must NOT be indexed.
+
+User-agent: *
+Allow: /login
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /student-information
+Disallow: /student-complete-detail
+Disallow: /no-dues-form
+Disallow: /admin-login
+Disallow: /admin-panel
+
+# Sitemap location
+Sitemap: https://arka-jain-erp.vercel.app/sitemap.xml
