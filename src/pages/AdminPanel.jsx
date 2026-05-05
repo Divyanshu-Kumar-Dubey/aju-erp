@@ -19,12 +19,10 @@ import {
   IndianRupee,
   AlertCircle,
   BookOpen,
-  ChevronRight,
   RefreshCw,
   Edit3
 } from 'lucide-react';
-import { getStudent, saveStudent, getAllStudents } from '../data/studentStore';
-import { seedDatabase } from '../data/seed';
+import { getStudent, saveStudent, getAllStudents, adminLogout } from '../data/studentStore';
 import './AdminPanel.css';
 
 const AdminPanel = () => {
@@ -57,7 +55,8 @@ const AdminPanel = () => {
   }, [adminView, loadDatabaseView]);
 
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await adminLogout();
     localStorage.removeItem('adminAuth');
     navigate('/admin-login', { replace: true });
     window.location.reload(); // force App state refresh
@@ -1042,7 +1041,7 @@ const AdminPanel = () => {
                         <Search size={40} />
                       </div>
                       <h3>Search to start editing</h3>
-                      <p>Enter a student's enrollment number above to load their profile, or click <strong>+ Add New Student</strong> to create a new record.</p>
+                      <p>Enter a student&apos;s enrollment number above to load their profile, or click <strong>+ Add New Student</strong> to create a new record.</p>
                       <button
                         className="idle-db-link"
                         onClick={() => setAdminView('database')}

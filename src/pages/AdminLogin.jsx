@@ -4,9 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ShieldCheck, Mail, Lock, AlertCircle, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 import './AdminLogin.css';
-
-const ADMIN_EMAIL = 'admin@aju.edu';
-const ADMIN_PASSWORD = 'admin@123';
+import { adminLogin } from '../data/studentStore';
 
 const AdminLogin = ({ onLogin }) => {
   const [email, setEmail] = useState('');
@@ -16,21 +14,20 @@ const AdminLogin = ({ onLogin }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setIsSubmitting(true);
 
-    setTimeout(() => {
-      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        // Call parent handler to update auth state in App
-        onLogin();
-        navigate('/admin-panel', { replace: true });
-      } else {
-        setError('Invalid credentials. Please try again.');
-        setIsSubmitting(false);
-      }
-    }, 700);
+    try {
+      await adminLogin(email, password);
+      // Call parent handler to update auth state in App
+      onLogin();
+      navigate('/admin-panel', { replace: true });
+    } catch (err) {
+      setError('Invalid credentials. Please try again.');
+      setIsSubmitting(false);
+    }
   };
 
   return (

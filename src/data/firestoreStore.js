@@ -289,6 +289,23 @@ export function useStudentSession() {
   return student;
 }
 
-// ─── Stub exports for compatibility ─────────────────────────────────────────
-export async function adminLogin() { return null; }
-export async function adminLogout() {}
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+
+export async function adminLogin(email, password) {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error('[ERP] Admin login error:', error);
+    throw error;
+  }
+}
+
+export async function adminLogout() {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.error('[ERP] Admin logout error:', error);
+  }
+}
