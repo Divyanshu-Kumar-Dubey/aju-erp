@@ -13,4 +13,4 @@ Disallow: /admin-login
 Disallow: /admin-panel
 
 # Sitemap location
-Sitemap: https://arka-jain-erp.vercel.app/sitemap.xml
+Sitemap: https://aju-erp-2026.web.app/sitemap.xml
