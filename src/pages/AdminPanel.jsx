@@ -153,7 +153,6 @@ const AdminPanel = () => {
     });
   };
 
-  const [saveSuccess, setSaveSuccess] = useState(false);
 
   const handleSave = async () => {
     setIsSaving(true);
