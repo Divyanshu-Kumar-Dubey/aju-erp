@@ -773,23 +773,24 @@ const AdminPanel = () => {
                         </td>
                         <td style={{ textAlign: 'center' }}>
                           <button 
+                            type="button"
                             className="btn-delete-row"
                             title="Delete Transaction"
-                            onClick={() => {
+                            onClick={async () => {
                               if (window.confirm(`Delete transaction ${txn.id} for ₹${txn.amount}? \n\nThis will permanently remove the receipt and automatically deduct the amount from the student's Paid balance.`)) {
-                                setFoundStudent(prev => {
-                                  const newTxns = prev.fees.transactions.filter((_, i) => i !== idx);
-                                  const newPaid = Math.max(0, (parseInt(prev.fees.paid) || 0) - (parseInt(txn.amount) || 0));
-                                  return {
-                                    ...prev,
-                                    fees: {
-                                      ...prev.fees,
-                                      paid: newPaid,
-                                      due: (parseInt(prev.fees.total) || 0) - newPaid,
-                                      transactions: newTxns
-                                    }
-                                  };
-                                });
+                                const newTxns = foundStudent.fees.transactions.filter((_, i) => i !== idx);
+                                const newPaid = Math.max(0, (parseInt(foundStudent.fees.paid) || 0) - (parseInt(txn.amount) || 0));
+                                const updatedStudent = {
+                                  ...foundStudent,
+                                  fees: {
+                                    ...foundStudent.fees,
+                                    paid: newPaid,
+                                    due: (parseInt(foundStudent.fees.total) || 0) - newPaid,
+                                    transactions: newTxns
+                                  }
+                                };
+                                setFoundStudent(updatedStudent);
+                                await saveStudent(updatedStudent.enrollmentNo, updatedStudent);
                               }
                             }}
                           >
