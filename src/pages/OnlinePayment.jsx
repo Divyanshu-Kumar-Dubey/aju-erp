@@ -25,10 +25,7 @@ const FEE_HEADS = [
   { label: 'Hostel Fee',       due: 1500  },
 ];
 
-const PAST_RECEIPTS = [
-  { id: 'AJU-2024-0891', date: '12 Jan 2025', amount: 45000, head: 'Tuition Fee (Sem 1)', status: 'Success' },
-  { id: 'AJU-2024-0512', date: '08 Jul 2024', amount: 35000, head: 'Tuition Fee (Sem 2)', status: 'Success' },
-];
+// Dynamic transactions are now managed in state
 
 export default function OnlinePayment() {
   const [collapsed, setCollapsed] = useState(false);
@@ -36,7 +33,22 @@ export default function OnlinePayment() {
   const student = useStudentSession();
   const { isLoaded, loadError, openRazorpay } = useRazorpay();
 
-  const [fees, setFees] = useState(student?.fees || { total: 120000, paid: 80000, due: 40000 });
+  const initialPaid = student?.fees?.paid ?? 80000;
+  const initialTransactions = student?.fees?.transactions || (
+    initialPaid === 80000 ? [
+      { id: 'AJU-2024-0891', date: '12 Jan 2025', amount: 45000, head: 'Tuition Fee (Sem 1)', status: 'Success' },
+      { id: 'AJU-2024-0512', date: '08 Jul 2024', amount: 35000, head: 'Tuition Fee (Sem 2)', status: 'Success' }
+    ] : initialPaid > 0 ? [
+      { id: 'AJU-SYS-ADJ', date: 'Previous', amount: initialPaid, head: 'Consolidated Past Payments', status: 'Success' }
+    ] : []
+  );
+
+  const [fees, setFees] = useState({
+    total: student?.fees?.total ?? 120000,
+    paid: initialPaid,
+    due: student?.fees?.due ?? 40000,
+    transactions: initialTransactions
+  });
 
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [selectedHeads, setSelectedHeads]   = useState({});
@@ -112,10 +124,18 @@ export default function OnlinePayment() {
         // ✅ Payment successful
         handler: (response) => {
           setTxnId(response.razorpay_payment_id);
+          const newTxn = {
+            id: response.razorpay_payment_id,
+            date: new Date().toLocaleDateString('en-IN'),
+            amount: totalSelected,
+            head: Object.keys(selectedHeads).filter(k => selectedHeads[k]).join(', '),
+            status: 'Success'
+          };
           const newFees = { 
             total: fees.total, 
             paid: fees.paid + totalSelected, 
-            due: fees.total - (fees.paid + totalSelected) 
+            due: fees.total - (fees.paid + totalSelected),
+            transactions: [newTxn, ...(fees.transactions || [])]
           };
           setFees(newFees);
           if (student?.enrollmentNo) {
@@ -504,44 +524,29 @@ export default function OnlinePayment() {
               </div>
 
               <div className="op-hist-list">
-                {PAST_RECEIPTS.map(r => (
-                  <div key={r.id} className="op-hist-item">
-                    <div className="op-hist-left">
-                      <CheckCircle2 size={18} color="#38a169" />
-                      <div>
-                        <div className="op-hist-head">{r.head}</div>
-                        <div className="op-hist-meta">{r.date} · {r.id}</div>
-                      </div>
-                    </div>
-                    <div className="op-hist-right">
-                      <span className="op-hist-amt">{fmtINR(r.amount)}</span>
-                      <span className="op-status-badge op-status-success">{r.status}</span>
-                    </div>
-                  </div>
-                ))}
-
-                {step === 'success' && (
-                  <motion.div
-                    className="op-hist-item op-hist-new"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <div className="op-hist-left">
-                      <CheckCircle2 size={18} color="#38a169" />
-                      <div>
-                        <div className="op-hist-head">
-                          {Object.keys(selectedHeads).filter(k => selectedHeads[k]).join(', ')}
-                        </div>
-                        <div className="op-hist-meta">
-                          {new Date().toLocaleDateString('en-IN')} · {txnId}
+                {(fees.transactions || []).length === 0 ? (
+                  <div style={{ padding: '2rem', textAlign: 'center', color: '#888' }}>No past payments found.</div>
+                ) : (
+                  (fees.transactions || []).map((r, idx) => (
+                    <motion.div 
+                      key={r.id + idx} 
+                      className={`op-hist-item ${r.id === txnId ? 'op-hist-new' : ''}`}
+                      initial={r.id === txnId ? { opacity: 0, y: 10 } : false}
+                      animate={r.id === txnId ? { opacity: 1, y: 0 } : false}
+                    >
+                      <div className="op-hist-left">
+                        <CheckCircle2 size={18} color="#38a169" />
+                        <div>
+                          <div className="op-hist-head">{r.head}</div>
+                          <div className="op-hist-meta">{r.date} · {r.id}</div>
                         </div>
                       </div>
-                    </div>
-                    <div className="op-hist-right">
-                      <span className="op-hist-amt">{fmtINR(totalSelected)}</span>
-                      <span className="op-status-badge op-status-success">Success</span>
-                    </div>
-                  </motion.div>
+                      <div className="op-hist-right">
+                        <span className="op-hist-amt">{fmtINR(r.amount)}</span>
+                        <span className="op-status-badge op-status-success">{r.status}</span>
+                      </div>
+                    </motion.div>
+                  ))
                 )}
               </div>
 
