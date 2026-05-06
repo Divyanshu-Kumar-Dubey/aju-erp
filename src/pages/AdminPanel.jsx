@@ -950,109 +950,94 @@ const AdminPanel = () => {
 
 
           {/* ── Database View ── */}
-          <AnimatePresence mode="wait">
-            {adminView === 'database' ? (
-              <motion.div key="db" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                {renderDatabaseView()}
-              </motion.div>
-            ) : (
-              <motion.div key="edit" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                {/* Search Bar */}
-                <section className="search-section">
-                  <Search className="text-gray-400" size={20} />
-                  <input
-                    type="text"
-                    className="search-input"
-                    placeholder="Enter Student Enrollment No. (e.g. AJU/241051)"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  />
-                  <button className="btn-search" onClick={handleSearch}>
-                    Search Student
-                  </button>
-                  <button className="btn-create" onClick={handleCreateNewStudent}>
-                    + Add New Student
-                  </button>
-                </section>
+          {adminView === 'database' ? (
+            <div className="fade-in-tab">
+              {renderDatabaseView()}
+            </div>
+          ) : (
+            <div className="fade-in-tab">
+              {/* Search Bar */}
+              <section className="search-section">
+                <Search className="text-gray-400" size={20} />
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Enter Student Enrollment No. (e.g. AJU/241051)"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                />
+                <button className="btn-search" onClick={handleSearch}>
+                  Search Student
+                </button>
+                <button className="btn-create" onClick={handleCreateNewStudent}>
+                  + Add New Student
+                </button>
+              </section>
 
-                {/* Edit Workspace */}
-                <AnimatePresence mode="wait">
-                  {foundStudent ? (
-                    <motion.div
-                      key="workspace"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      className="edit-workspace"
+              {/* Edit Workspace */}
+              {foundStudent ? (
+                <div className="edit-workspace fade-in-tab">
+                  <nav className="tabs-nav">
+                    <button
+                      className={`tab-btn ${activeTab === 'personal' ? 'active' : ''}`}
+                      onClick={() => setActiveTab('personal')}
                     >
-                      <nav className="tabs-nav">
-                        <button
-                          className={`tab-btn ${activeTab === 'personal' ? 'active' : ''}`}
-                          onClick={() => setActiveTab('personal')}
-                        >
-                          <User size={18} /> Personal Details
-                        </button>
-                        <button
-                          className={`tab-btn ${activeTab === 'academic' ? 'active' : ''}`}
-                          onClick={() => setActiveTab('academic')}
-                        >
-                          <GraduationCap size={18} /> Academic Record
-                        </button>
-                        <button
-                          className={`tab-btn ${activeTab === 'attendance' ? 'active' : ''}`}
-                          onClick={() => setActiveTab('attendance')}
-                        >
-                          <Calendar size={18} /> Attendance
-                        </button>
-                        <button
-                          className={`tab-btn ${activeTab === 'fees' ? 'active' : ''}`}
-                          onClick={() => setActiveTab('fees')}
-                        >
-                          <CreditCard size={18} /> Fees Management
-                        </button>
-                      </nav>
-
-                      <div className="tab-content">
-                        {renderTabContent()}
-                      </div>
-
-                      <div className="save-section">
-                        <button
-                          className={`btn-save ${saveSuccess ? 'success' : ''}`}
-                          onClick={handleSave}
-                          disabled={isSaving}
-                        >
-                          {isSaving ? 'Saving Changes...' : saveSuccess ? '✓ Saved!' : (
-                            <><Save size={20} /> Save All Changes</>
-                          )}
-                        </button>
-                      </div>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="idle"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="admin-idle-state"
+                      <User size={18} /> Personal Details
+                    </button>
+                    <button
+                      className={`tab-btn ${activeTab === 'academic' ? 'active' : ''}`}
+                      onClick={() => setActiveTab('academic')}
                     >
-                      <div className="idle-icon-wrap">
-                        <Search size={40} />
-                      </div>
-                      <h3>Search to start editing</h3>
-                      <p>Enter a student&apos;s enrollment number above to load their profile, or click <strong>+ Add New Student</strong> to create a new record.</p>
-                      <button
-                        className="idle-db-link"
-                        onClick={() => setAdminView('database')}
-                      >
-                        <Database size={16} /> Or browse all students in View Database
-                      </button>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                      <GraduationCap size={18} /> Academic Record
+                    </button>
+                    <button
+                      className={`tab-btn ${activeTab === 'attendance' ? 'active' : ''}`}
+                      onClick={() => setActiveTab('attendance')}
+                    >
+                      <Calendar size={18} /> Attendance
+                    </button>
+                    <button
+                      className={`tab-btn ${activeTab === 'fees' ? 'active' : ''}`}
+                      onClick={() => setActiveTab('fees')}
+                    >
+                      <CreditCard size={18} /> Fees Management
+                    </button>
+                  </nav>
+
+                  <div className="tab-content">
+                    {renderTabContent()}
+                  </div>
+
+                  <div className="save-section">
+                    <button
+                      className={`btn-save ${saveSuccess ? 'success' : ''}`}
+                      onClick={handleSave}
+                      disabled={isSaving}
+                    >
+                      {isSaving ? 'Saving Changes...' : saveSuccess ? '✓ Saved!' : (
+                        <><Save size={20} /> Save All Changes</>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="admin-idle-state fade-in-tab">
+                  <div className="idle-icon-wrap">
+                    <Search size={40} />
+                  </div>
+                  <h3>Search to start editing</h3>
+                  <p>Enter a student&apos;s enrollment number above to load their profile, or click <strong>+ Add New Student</strong> to create a new record.</p>
+                  <button
+                    className="idle-db-link"
+                    onClick={() => setAdminView('database')}
+                  >
+                    <Database size={16} /> Or browse all students in View Database
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </main>
     </div>
