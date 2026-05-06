@@ -746,7 +746,33 @@ const AdminPanel = () => {
             </div>
 
             <div className="subjects-editor">
-              <h3 style={{ margin: '0 0 10px 0', color: 'var(--text-primary)', fontSize: '1.1rem' }}>Transaction History</h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+                <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.1rem' }}>Transaction History</h3>
+                {foundStudent.fees?.transactions?.length > 0 && (
+                  <button 
+                    type="button"
+                    title="Clear All History"
+                    style={{ background: '#fee2e2', color: '#dc2626', padding: '6px 12px', borderRadius: '6px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', border: '1px solid #fca5a5', cursor: 'pointer' }}
+                    onClick={async () => {
+                      if (window.confirm("WARNING: Are you sure you want to delete ALL transaction history?\n\nThis will instantly reset the Paid Amount to ₹0 and restore the Due Amount to the Total Fee Amount. This action CANNOT be undone.")) {
+                        const updatedStudent = {
+                          ...foundStudent,
+                          fees: {
+                            ...foundStudent.fees,
+                            paid: 0,
+                            due: parseInt(foundStudent.fees?.total) || 0,
+                            transactions: []
+                          }
+                        };
+                        setFoundStudent(updatedStudent);
+                        await saveStudent(updatedStudent.enrollmentNo, updatedStudent);
+                      }
+                    }}
+                  >
+                    <Trash2 size={14} style={{ marginRight: 6 }} /> Clear All History
+                  </button>
+                )}
+              </div>
               {(!foundStudent.fees?.transactions || foundStudent.fees.transactions.length === 0) ? (
                 <div style={{ textAlign: 'center', padding: '2rem', color: '#666', background: 'var(--glass-bg)', borderRadius: 12 }}>
                   No payment history recorded yet.
