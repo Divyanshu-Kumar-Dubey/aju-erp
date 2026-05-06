@@ -31,6 +31,8 @@ const AdminPanel = () => {
   const [foundStudent, setFoundStudent] = useState(null);
   const [activeTab, setActiveTab] = useState('personal');
   const [isSaving, setIsSaving] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
   // ── Database View ──
   const [adminView, setAdminView] = useState('edit'); // 'edit' | 'database'
@@ -66,6 +68,8 @@ const AdminPanel = () => {
   const handleSearch = async () => {
     const key = searchQuery.trim().toUpperCase();
     if (!key) return;
+    
+    setIsSearching(true);
     try {
       const student = await getStudent(key);
       if (student) {
@@ -77,6 +81,8 @@ const AdminPanel = () => {
     } catch (err) {
       console.error(err);
       alert('Error connecting to database. Check your internet.');
+    } finally {
+      setIsSearching(false);
     }
   };
 
@@ -967,8 +973,8 @@ const AdminPanel = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
                 />
-                <button className="btn-search" onClick={handleSearch}>
-                  Search Student
+                <button className="btn-search" onClick={handleSearch} disabled={isSearching}>
+                  {isSearching ? 'Searching...' : 'Search Student'}
                 </button>
                 <button className="btn-create" onClick={handleCreateNewStudent}>
                   + Add New Student

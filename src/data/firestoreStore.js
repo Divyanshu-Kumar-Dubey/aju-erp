@@ -166,18 +166,33 @@ export async function getAllStudents() {
   return lsGetAll();
 }
 
-/** Get one student — tries Firestore, falls back to localStorage */
+/** Get one student — tries localStorage first (0ms latency), syncs Firestore in background */
 export async function getStudent(enrollmentNo) {
-  try {
-    const ok = await checkFirestore();
-    if (ok) {
-      const docRef = doc(db, 'students', toDocId(enrollmentNo));
-      const docSnap = await withTimeout(getDoc(docRef), 2000);
-      if (docSnap.exists()) return docSnap.data();
+  const localData = lsGetOne(enrollmentNo);
+
+  const syncFirestore = async () => {
+    try {
+      const ok = await checkFirestore();
+      if (ok) {
+        const docRef = doc(db, 'students', toDocId(enrollmentNo));
+        const docSnap = await withTimeout(getDoc(docRef), 2000);
+        if (docSnap.exists()) {
+          lsSave(enrollmentNo, docSnap.data());
+        }
+      }
+    } catch (e) {
+      console.warn('[ERP] getStudent Firestore sync failed:', e?.code);
     }
-  } catch (e) {
-    console.warn('[ERP] getStudent Firestore error, using localStorage:', e?.code);
+  };
+
+  if (localData) {
+    // Stale-While-Revalidate: Return instantly, update cache silently
+    syncFirestore();
+    return localData;
   }
+
+  // If not in cache, we must await Firestore
+  await syncFirestore();
   return lsGetOne(enrollmentNo);
 }
 
