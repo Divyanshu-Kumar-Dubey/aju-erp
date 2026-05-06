@@ -174,10 +174,37 @@ const AdminPanel = () => {
         return (
           <div className="form-grid fade-in-tab">
             <div className="profile-img-editor">
-              <img src={foundStudent.image} alt="Profile" className="preview-avatar" />
-              <button className="upload-btn">
+              <img src={foundStudent.image || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(foundStudent.name || 'Student') + '&background=008080&color=fff&size=128'} alt="Profile" className="preview-avatar" />
+              <label htmlFor="photo-upload" className="upload-btn" style={{ cursor: 'pointer' }}>
                 <Upload size={16} /> Update Photo
-              </button>
+              </label>
+              <input
+                id="photo-upload"
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onload = (ev) => {
+                    const img = new Image();
+                    img.onload = () => {
+                      // Compress: resize to max 200x200, JPEG quality 0.7
+                      const MAX = 200;
+                      const scale = Math.min(MAX / img.width, MAX / img.height, 1);
+                      const canvas = document.createElement('canvas');
+                      canvas.width  = Math.round(img.width  * scale);
+                      canvas.height = Math.round(img.height * scale);
+                      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                      const compressed = canvas.toDataURL('image/jpeg', 0.7);
+                      handleUpdate('image', compressed);
+                    };
+                    img.src = ev.target.result;
+                  };
+                  reader.readAsDataURL(file);
+                }}
+              />
             </div>
             
             <div className="form-group">
@@ -754,19 +781,17 @@ const AdminPanel = () => {
                     title="Clear All History"
                     style={{ background: '#fee2e2', color: '#dc2626', padding: '6px 12px', borderRadius: '6px', fontSize: '0.85rem', display: 'flex', alignItems: 'center', border: '1px solid #fca5a5', cursor: 'pointer' }}
                     onClick={async () => {
-                      if (window.confirm("WARNING: Are you sure you want to delete ALL transaction history?\n\nThis will instantly reset the Paid Amount to ₹0 and restore the Due Amount to the Total Fee Amount. This action CANNOT be undone.")) {
-                        const updatedStudent = {
-                          ...foundStudent,
-                          fees: {
-                            ...foundStudent.fees,
-                            paid: 0,
-                            due: parseInt(foundStudent.fees?.total) || 0,
-                            transactions: []
-                          }
-                        };
-                        setFoundStudent(updatedStudent);
-                        await saveStudent(updatedStudent.enrollmentNo, updatedStudent);
-                      }
+                      const updatedStudent = {
+                        ...foundStudent,
+                        fees: {
+                          ...foundStudent.fees,
+                          paid: 0,
+                          due: parseInt(foundStudent.fees?.total) || 0,
+                          transactions: []
+                        }
+                      };
+                      setFoundStudent(updatedStudent);
+                      await saveStudent(updatedStudent.enrollmentNo, updatedStudent);
                     }}
                   >
                     <Trash2 size={14} style={{ marginRight: 6 }} /> Clear All History
@@ -803,21 +828,19 @@ const AdminPanel = () => {
                             className="btn-delete-row"
                             title="Delete Transaction"
                             onClick={async () => {
-                              if (window.confirm(`Delete transaction ${txn.id} for ₹${txn.amount}? \n\nThis will permanently remove the receipt and automatically deduct the amount from the student's Paid balance.`)) {
-                                const newTxns = foundStudent.fees.transactions.filter((_, i) => i !== idx);
-                                const newPaid = Math.max(0, (parseInt(foundStudent.fees.paid) || 0) - (parseInt(txn.amount) || 0));
-                                const updatedStudent = {
-                                  ...foundStudent,
-                                  fees: {
-                                    ...foundStudent.fees,
-                                    paid: newPaid,
-                                    due: (parseInt(foundStudent.fees.total) || 0) - newPaid,
-                                    transactions: newTxns
-                                  }
-                                };
-                                setFoundStudent(updatedStudent);
-                                await saveStudent(updatedStudent.enrollmentNo, updatedStudent);
-                              }
+                              const newTxns = foundStudent.fees.transactions.filter((_, i) => i !== idx);
+                              const newPaid = Math.max(0, (parseInt(foundStudent.fees.paid) || 0) - (parseInt(txn.amount) || 0));
+                              const updatedStudent = {
+                                ...foundStudent,
+                                fees: {
+                                  ...foundStudent.fees,
+                                  paid: newPaid,
+                                  due: (parseInt(foundStudent.fees.total) || 0) - newPaid,
+                                  transactions: newTxns
+                                }
+                              };
+                              setFoundStudent(updatedStudent);
+                              await saveStudent(updatedStudent.enrollmentNo, updatedStudent);
                             }}
                           >
                             <Trash2 size={14} />

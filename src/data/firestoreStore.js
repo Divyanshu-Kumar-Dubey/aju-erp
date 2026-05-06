@@ -104,8 +104,31 @@ function lsGetOne(enrollmentNo) {
 function lsSave(enrollmentNo, data) {
   const all = lsGetAll();
   all[enrollmentNo.toUpperCase()] = { ...data, enrollmentNo: enrollmentNo.toUpperCase() };
-  localStorage.setItem(LS_STORE_KEY, JSON.stringify(all));
-  window.dispatchEvent(new Event('studentStoreUpdated'));
+  try {
+    localStorage.setItem(LS_STORE_KEY, JSON.stringify(all));
+    window.dispatchEvent(new Event('studentStoreUpdated'));
+  } catch (e) {
+    if (e?.name === 'QuotaExceededError' || e?.code === 22) {
+      console.warn('[ERP] localStorage quota exceeded. Attempting to save without large images...');
+      // Strip large image fields and try again
+      const allStripped = {};
+      for (const key of Object.keys(all)) {
+        const student = { ...all[key] };
+        if (student.image && student.image.startsWith('data:') && student.image.length > 50000) {
+          student.image = student.image.substring(0, 50000); // Truncate oversized images
+        }
+        allStripped[key] = student;
+      }
+      try {
+        localStorage.setItem(LS_STORE_KEY, JSON.stringify(allStripped));
+        window.dispatchEvent(new Event('studentStoreUpdated'));
+      } catch (e2) {
+        console.error('[ERP] localStorage is completely full. Please clear browser data.', e2);
+      }
+    } else {
+      console.error('[ERP] lsSave error:', e);
+    }
+  }
 }
 
 // ─── Firestore Helpers ───────────────────────────────────────────────────────
