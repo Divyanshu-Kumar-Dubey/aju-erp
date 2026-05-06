@@ -697,50 +697,110 @@ const AdminPanel = () => {
         );
       case 'fees':
         return (
-          <div className="form-grid fade-in-tab">
-            <div className="form-group">
-              <label>Total Fee Amount</label>
-              <input 
-                type="number" 
-                value={foundStudent.fees?.total ?? 0} 
-                onChange={(e) => {
-                  const newTotal = parseInt(e.target.value) || 0;
-                  setFoundStudent(prev => ({
-                    ...prev,
-                    fees: {
-                      ...prev.fees,
-                      total: newTotal,
-                      due: newTotal - (parseInt(prev.fees?.paid) || 0)
-                    }
-                  }));
-                }}
-              />
+          <div className="fade-in-tab" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div className="form-grid">
+              <div className="form-group">
+                <label>Total Fee Amount</label>
+                <input 
+                  type="number" 
+                  value={foundStudent.fees?.total ?? 0} 
+                  onChange={(e) => {
+                    const newTotal = parseInt(e.target.value) || 0;
+                    setFoundStudent(prev => ({
+                      ...prev,
+                      fees: {
+                        ...prev.fees,
+                        total: newTotal,
+                        due: newTotal - (parseInt(prev.fees?.paid) || 0)
+                      }
+                    }));
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <label>Paid Amount</label>
+                <input 
+                  type="number" 
+                  value={foundStudent.fees?.paid ?? 0} 
+                  onChange={(e) => {
+                    const newPaid = parseInt(e.target.value) || 0;
+                    setFoundStudent(prev => ({
+                      ...prev,
+                      fees: {
+                        ...prev.fees,
+                        paid: newPaid,
+                        due: (parseInt(prev.fees?.total) || 0) - newPaid
+                      }
+                    }));
+                  }}
+                />
+              </div>
+              <div className="form-group">
+                <label>Due Amount</label>
+                <input 
+                  type="number" 
+                  value={foundStudent.fees.due} 
+                  readOnly
+                />
+              </div>
             </div>
-            <div className="form-group">
-              <label>Paid Amount</label>
-              <input 
-                type="number" 
-                value={foundStudent.fees?.paid ?? 0} 
-                onChange={(e) => {
-                  const newPaid = parseInt(e.target.value) || 0;
-                  setFoundStudent(prev => ({
-                    ...prev,
-                    fees: {
-                      ...prev.fees,
-                      paid: newPaid,
-                      due: (parseInt(prev.fees?.total) || 0) - newPaid
-                    }
-                  }));
-                }}
-              />
-            </div>
-            <div className="form-group">
-              <label>Due Amount</label>
-              <input 
-                type="number" 
-                value={foundStudent.fees.due} 
-                readOnly
-              />
+
+            <div className="subjects-editor">
+              <h3 style={{ margin: '0 0 10px 0', color: 'var(--text-primary)', fontSize: '1.1rem' }}>Transaction History</h3>
+              {(!foundStudent.fees?.transactions || foundStudent.fees.transactions.length === 0) ? (
+                <div style={{ textAlign: 'center', padding: '2rem', color: '#666', background: 'var(--glass-bg)', borderRadius: 12 }}>
+                  No payment history recorded yet.
+                </div>
+              ) : (
+                <table className="marks-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Transaction ID</th>
+                      <th>Particulars</th>
+                      <th>Amount</th>
+                      <th style={{ width: 60, textAlign: 'center' }}>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {foundStudent.fees.transactions.map((txn, idx) => (
+                      <tr key={txn.id + idx}>
+                        <td>{txn.date}</td>
+                        <td style={{ fontFamily: 'monospace' }}>{txn.id}</td>
+                        <td>{txn.head}</td>
+                        <td style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                          {txn.amount?.toLocaleString('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 })}
+                        </td>
+                        <td style={{ textAlign: 'center' }}>
+                          <button 
+                            className="btn-delete-row"
+                            title="Delete Transaction"
+                            onClick={() => {
+                              if (window.confirm(`Delete transaction ${txn.id} for ₹${txn.amount}? \n\nThis will permanently remove the receipt and automatically deduct the amount from the student's Paid balance.`)) {
+                                setFoundStudent(prev => {
+                                  const newTxns = prev.fees.transactions.filter((_, i) => i !== idx);
+                                  const newPaid = Math.max(0, (parseInt(prev.fees.paid) || 0) - (parseInt(txn.amount) || 0));
+                                  return {
+                                    ...prev,
+                                    fees: {
+                                      ...prev.fees,
+                                      paid: newPaid,
+                                      due: (parseInt(prev.fees.total) || 0) - newPaid,
+                                      transactions: newTxns
+                                    }
+                                  };
+                                });
+                              }
+                            }}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
             </div>
           </div>
         );
