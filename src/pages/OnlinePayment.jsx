@@ -131,10 +131,13 @@ export default function OnlinePayment() {
             head: Object.keys(selectedHeads).filter(k => selectedHeads[k]).join(', '),
             status: 'Success'
           };
+          const currentPaid = parseInt(fees.paid) || 0;
+          const currentTotal = parseInt(fees.total) || 0;
+          const selectedAmount = parseInt(totalSelected) || 0;
           const newFees = { 
-            total: fees.total, 
-            paid: fees.paid + totalSelected, 
-            due: fees.total - (fees.paid + totalSelected),
+            total: currentTotal, 
+            paid: currentPaid + selectedAmount, 
+            due: currentTotal - (currentPaid + selectedAmount),
             transactions: [newTxn, ...(fees.transactions || [])]
           };
           setFees(newFees);
