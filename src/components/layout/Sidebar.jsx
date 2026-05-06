@@ -22,7 +22,7 @@ const navItems = [
       { label: 'Student Complete Detail', path: '/student-complete-detail' },
       { label: 'Result', path: '/result' },
       { label: 'No Dues Form Generation', path: '/no-dues-form' },
-      { label: 'Online Payment' },
+      { label: 'Online Payment', path: '/online-payment' },
       { label: 'Apply For No Dues' },
       { label: 'Print Fees Receipt' },
     ],

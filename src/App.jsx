@@ -9,6 +9,7 @@ const StudentInformation = lazy(() => import('./pages/StudentInformation'));
 const StudentCompleteDetail = lazy(() => import('./pages/StudentCompleteDetail'));
 const Result             = lazy(() => import('./pages/Result'));
 const NoDuesForm         = lazy(() => import('./pages/NoDuesForm'));
+const OnlinePayment      = lazy(() => import('./pages/OnlinePayment'));
 const AdminPanel         = lazy(() => import('./pages/AdminPanel'));
 const AdminLogin         = lazy(() => import('./pages/AdminLogin'));
 
@@ -59,6 +60,7 @@ function App() {
           <Route path="/student-complete-detail" element={<StudentCompleteDetail />} />
           <Route path="/result" element={<Result />} />
           <Route path="/no-dues-form" element={<NoDuesForm />} />
+          <Route path="/online-payment" element={<OnlinePayment />} />
           <Route 
             path="/admin-login" 
             element={

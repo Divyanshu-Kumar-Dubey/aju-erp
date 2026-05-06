@@ -167,11 +167,7 @@ const AdminPanel = () => {
     switch (activeTab) {
       case 'personal':
         return (
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="form-grid"
-          >
+          <div className="form-grid fade-in-tab">
             <div className="profile-img-editor">
               <img src={foundStudent.image} alt="Profile" className="preview-avatar" />
               <button className="upload-btn">
@@ -247,15 +243,11 @@ const AdminPanel = () => {
                 onChange={(e) => handleUpdate('address', e.target.value)}
               />
             </div>
-          </motion.div>
+          </div>
         );
       case 'academic':
         return (
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
-          >
+          <div className="fade-in-tab" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {/* Program Information */}
             <div>
               <h3 style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>Program Information</h3>
@@ -564,16 +556,11 @@ const AdminPanel = () => {
                 </div>
               )}
             </div>
-          </motion.div>
+          </div>
         );
       case 'attendance':
         return (
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="form-grid"
-            style={{ display: 'block' }}
-          >
+          <div className="form-grid fade-in-tab" style={{ display: 'block' }}>
             <div className="form-grid" style={{ marginBottom: '20px' }}>
               <div className="form-group">
                 <label>Overall Theory Attendance (%)</label>
@@ -701,29 +688,45 @@ const AdminPanel = () => {
                 </tbody>
               </table>
             </div>
-          </motion.div>
+          </div>
         );
       case 'fees':
         return (
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="form-grid"
-          >
+          <div className="form-grid fade-in-tab">
             <div className="form-group">
               <label>Total Fee Amount</label>
               <input 
                 type="number" 
-                value={foundStudent.fees.total} 
-                onChange={(e) => handleUpdate('total', e.target.value, 'fees')}
+                value={foundStudent.fees?.total ?? 0} 
+                onChange={(e) => {
+                  const newTotal = parseInt(e.target.value) || 0;
+                  setFoundStudent(prev => ({
+                    ...prev,
+                    fees: {
+                      ...prev.fees,
+                      total: newTotal,
+                      due: newTotal - (parseInt(prev.fees?.paid) || 0)
+                    }
+                  }));
+                }}
               />
             </div>
             <div className="form-group">
               <label>Paid Amount</label>
               <input 
                 type="number" 
-                value={foundStudent.fees.paid} 
-                onChange={(e) => handleUpdate('paid', e.target.value, 'fees')}
+                value={foundStudent.fees?.paid ?? 0} 
+                onChange={(e) => {
+                  const newPaid = parseInt(e.target.value) || 0;
+                  setFoundStudent(prev => ({
+                    ...prev,
+                    fees: {
+                      ...prev.fees,
+                      paid: newPaid,
+                      due: (parseInt(prev.fees?.total) || 0) - newPaid
+                    }
+                  }));
+                }}
               />
             </div>
             <div className="form-group">
@@ -734,7 +737,7 @@ const AdminPanel = () => {
                 readOnly
               />
             </div>
-          </motion.div>
+          </div>
         );
       default:
         return null;
@@ -767,11 +770,7 @@ const AdminPanel = () => {
     };
 
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="db-view"
-      >
+      <div className="db-view fade-in-tab">
         {/* Stats Row */}
         <div className="db-stats-row">
           <div className="db-stat-card db-stat-blue">
@@ -897,7 +896,7 @@ const AdminPanel = () => {
             </table>
           )}
         </div>
-      </motion.div>
+      </div>
     );
   };
 
