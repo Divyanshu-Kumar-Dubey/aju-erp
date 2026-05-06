@@ -110,6 +110,14 @@ function lsSave(enrollmentNo, data) {
 
 // ─── Firestore Helpers ───────────────────────────────────────────────────────
 
+/** Wrap a promise with a timeout to prevent long UI hangs */
+const withTimeout = (promise, ms) => {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), ms))
+  ]);
+};
+
 /** Convert enrollment number to a valid Firestore document ID */
 function toDocId(enrollmentNo) {
   return enrollmentNo.toUpperCase().replace('/', '_');
@@ -121,8 +129,8 @@ let firestoreAvailable = null; // null = unknown, true/false = determined
 async function checkFirestore() {
   if (firestoreAvailable !== null) return firestoreAvailable;
   try {
-    // Try a lightweight read from a known path to test connectivity
-    await getDoc(doc(db, '_ping', 'test'));
+    // Try a lightweight read from a known path to test connectivity, timeout at 1.5s
+    await withTimeout(getDoc(doc(db, '_ping', 'test')), 1500);
     firestoreAvailable = true;
   } catch (e) {
     // "not-found" means DB exists but doc doesn't — that's fine
@@ -143,7 +151,7 @@ export async function getAllStudents() {
   try {
     const ok = await checkFirestore();
     if (ok) {
-      const snapshot = await getDocs(collection(db, 'students'));
+      const snapshot = await withTimeout(getDocs(collection(db, 'students')), 2500);
       const students = {};
       snapshot.forEach(docSnap => {
         const key = docSnap.id.replace('_', '/');
@@ -164,7 +172,7 @@ export async function getStudent(enrollmentNo) {
     const ok = await checkFirestore();
     if (ok) {
       const docRef = doc(db, 'students', toDocId(enrollmentNo));
-      const docSnap = await getDoc(docRef);
+      const docSnap = await withTimeout(getDoc(docRef), 2000);
       if (docSnap.exists()) return docSnap.data();
     }
   } catch (e) {
