@@ -115,7 +115,7 @@ export default function OnlinePayment() {
           const newFees = { 
             total: fees.total, 
             paid: fees.paid + totalSelected, 
-            due: fees.due - totalSelected 
+            due: fees.total - (fees.paid + totalSelected) 
           };
           setFees(newFees);
           if (student?.enrollmentNo) {
@@ -172,7 +172,7 @@ export default function OnlinePayment() {
             {[
               { label: 'Total Fees', value: fees.total, color: '#4a5568', icon: '🎓' },
               { label: 'Amount Paid', value: fees.paid,  color: '#38a169', icon: '✅' },
-              { label: 'Amount Due',  value: fees.due,   color: '#e53e3e', icon: '⚠️' },
+              { label: 'Amount Due',  value: fees.total - fees.paid,   color: '#e53e3e', icon: '⚠️' },
             ].map(({ label, value, color, icon }) => (
               <motion.div
                 key={label}
@@ -550,7 +550,7 @@ export default function OnlinePayment() {
                 <AlertCircle size={16} color="#e53e3e" />
                 <div>
                   <div className="op-pa-title">Outstanding Balance</div>
-                  <div className="op-pa-val">{fmtINR(fees.due)}</div>
+                  <div className="op-pa-val">{fmtINR(fees.total - fees.paid)}</div>
                 </div>
               </div>
 
