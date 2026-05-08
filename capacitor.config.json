@@ -1,0 +1,20 @@
+{
+  "appId": "com.aju.erp",
+  "appName": "AJU ERP",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#1a237e"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#1a237e",
+      "androidSplashResourceName": "splash",
+      "showSpinner": false
+    }
+  }
+}

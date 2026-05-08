@@ -4,6 +4,7 @@ import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',   // Required for Capacitor — assets load via file:// on Android
   plugins: [
     react(),
     // Gzip compression for all assets — improves page load speed → Core Web Vitals → SEO

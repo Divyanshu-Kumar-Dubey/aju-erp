@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AJU ERP</string>
+    <string name="title_activity_main">AJU ERP</string>
+    <string name="package_name">com.aju.erp</string>
+    <string name="custom_url_scheme">com.aju.erp</string>
+</resources>
