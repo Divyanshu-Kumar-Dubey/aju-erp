@@ -199,3 +199,76 @@
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* Mobile Menu Toggle (hidden on desktop) */
+.mobile-menu-toggle {
+  display: none;
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .mobile-menu-toggle {
+    display: block;
+    color: white;
+  }
+
+  .navbar {
+    padding: 0 15px;
+  }
+
+  .navbar-actions {
+    display: none; /* Hide extra actions on very small screens, or put them in menu */
+  }
+
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-green);
+    height: auto;
+    margin-left: 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+
+  .navbar-links.mobile-open {
+    display: flex;
+  }
+
+  .navbar-links li {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .submenu-container {
+    position: static;
+    box-shadow: none;
+    width: 100%;
+    padding-left: 20px;
+    background-color: rgba(0,0,0,0.05);
+  }
+
+  .nested-submenu {
+    position: static;
+    display: block;
+    background-color: transparent;
+    padding-left: 10px;
+    box-shadow: none;
+  }
+
+  .submenu-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .submenu-item > span {
+    margin-bottom: 10px;
+  }
+
+  .nested-submenu a {
+    border-bottom: none;
+    padding: 8px 16px;
+  }
+}

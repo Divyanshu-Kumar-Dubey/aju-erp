@@ -189,3 +189,26 @@ ul { list-style: none; }
 [data-theme="dark"] .save-section { border-color: var(--border-color); }
 [data-theme="dark"] .profile-img-editor { border-color: var(--border-color); }
 
+/* =====================
+   NATIVE APP FEEL TWEAKS
+   ===================== */
+body {
+  /* Prevent text selection so it doesn't feel like a webpage */
+  -webkit-user-select: none;
+  user-select: none;
+  /* Prevent pull-to-refresh rubber-banding on iOS/Android */
+  overscroll-behavior-y: none;
+  /* Remove tap highlight color */
+  -webkit-tap-highlight-color: transparent;
+  /* Support safe area insets (notches, home indicators) */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Allow text selection in inputs and textareas */
+input, textarea {
+  -webkit-user-select: auto;
+  user-select: auto;
+}

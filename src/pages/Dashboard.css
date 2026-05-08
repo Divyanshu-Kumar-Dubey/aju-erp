@@ -136,3 +136,18 @@
 }
 
 .widget-body-inner { padding: 18px 20px; }
+
+/* -- Responsive Mobile Optimization -- */
+@media (max-width: 900px) {
+  .dash-grid-main {
+    grid-template-columns: 1fr;
+  }
+  .dash-main {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .dash-page-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, ChevronDown, ChevronRight, Star } from 'lucide-react';
+import { Search, ChevronDown, ChevronRight, Star, Menu, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
@@ -66,6 +66,7 @@ const ELearningMenu = () => {
 
 export default function Navbar() {
   const [activeMenu, setActiveMenu] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <nav className="navbar">
@@ -78,7 +79,11 @@ export default function Navbar() {
         </div>
       </div>
       
-      <ul className="navbar-links">
+      <div className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </div>
+      
+      <ul className={`navbar-links ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
         <li 
           onMouseEnter={() => setActiveMenu('academic')}
           onMouseLeave={() => setActiveMenu(null)}
