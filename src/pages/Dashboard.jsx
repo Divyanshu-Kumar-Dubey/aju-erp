@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import Sidebar from '../components/layout/Sidebar';
 import TopBar from '../components/layout/TopBar';
+import BottomNav from '../components/layout/BottomNav';
 import KPICards from '../components/widgets/KPICards';
 import ActiveNotice from '../components/widgets/ActiveNotice';
 import TimeTable from '../components/widgets/TimeTable';
@@ -26,12 +27,12 @@ const itemVariants = {
 
 export default function Dashboard() {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const offset = collapsed ? 72 : 260;
   
   const student = useStudentSession();
   const firstName = student?.name ? student.name.split(' ')[0] : 'Ansh';
 
-  // Format date correctly
   const today = useMemo(() => new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }), []);
 
   return (
@@ -40,8 +41,14 @@ export default function Dashboard() {
         <title>Dashboard | AJU ERP — Arka Jain University</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-      <TopBar collapsed={collapsed} />
+
+      <Sidebar
+        collapsed={collapsed}
+        setCollapsed={setCollapsed}
+        mobileOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+      />
+      <TopBar collapsed={collapsed} onMenuOpen={() => setMobileOpen(true)} />
 
       <motion.main
         className="dash-main"
@@ -100,10 +107,11 @@ export default function Dashboard() {
       </motion.main>
 
       <footer className="dash-footer" style={{ marginLeft: offset }}>
-        Designed & Developed by <span>MasterSoft ERP</span> · Copyright © 2026 Arka Jain University
+        Designed &amp; Developed by <span>MasterSoft ERP</span> · Copyright © 2026 Arka Jain University
       </footer>
+
+      {/* Mobile bottom navigation bar */}
+      <BottomNav onMenuOpen={() => setMobileOpen(true)} />
     </div>
   );
 }
-
-// Trigger HMR

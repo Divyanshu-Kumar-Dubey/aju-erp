@@ -257,3 +257,46 @@
   border-color: #7986cb;
   color: #c5cae9;
 }
+
+/* ── Hamburger (mobile only) ── */
+.topbar-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    left: 0 !important; /* always full width */
+    padding: 0 16px;
+  }
+
+  .topbar-hamburger {
+    display: flex;
+  }
+
+  /* Hide search on mobile (too cramped) */
+  .topbar-search-wrapper {
+    display: none;
+  }
+
+  /* Hide text next to avatar */
+  .topbar-user-info {
+    display: none;
+  }
+
+  /* Tighten avatar */
+  .topbar-avatar {
+    padding: 4px 8px 4px 4px;
+  }
+
+  .topbar-right {
+    gap: 8px;
+  }
+}

@@ -212,3 +212,28 @@ input, textarea {
   -webkit-user-select: auto;
   user-select: auto;
 }
+
+/* =====================
+   GLOBAL MOBILE LAYOUT FIX
+   On mobile, ALL pages that use the sidebar layout must ignore
+   the inline marginLeft from the desktop sidebar and be full-width.
+   ===================== */
+@media (max-width: 768px) {
+  /* Remove the dynamic sidebar offset from all page roots */
+  .main-content,
+  .dash-main,
+  .result-main,
+  .payment-main,
+  .profile-main,
+  .ndf-main {
+    margin-left: 0 !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 80px !important; /* space for bottom nav */
+  }
+
+  /* Generic page content wrapper used by several pages */
+  .dashboard-content {
+    padding-top: 20px;
+  }
+}

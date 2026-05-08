@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Bell, Search, Sun, Moon, ArrowRight } from 'lucide-react';
+import { Bell, Search, Sun, Moon, ArrowRight, Menu } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStudentSession } from '../../data/studentStore';
 import './TopBar.css';
@@ -27,7 +27,7 @@ const ALL_PAGES = [
   { label: 'Profile', path: '/profile', category: 'Account' },
 ];
 
-export default function TopBar({ collapsed }) {
+export default function TopBar({ collapsed, onMenuOpen }) {
   const leftOffset = collapsed ? 72 : 260;
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -108,8 +108,12 @@ export default function TopBar({ collapsed }) {
   };
 
   return (
-    <header className="topbar" style={{ left: leftOffset }}>
+    <header className="topbar" style={{ left: collapsed ? 72 : 260 }}>
       <div className="topbar-left">
+        {/* Hamburger — mobile only */}
+        <button className="topbar-hamburger" onClick={onMenuOpen} title="Open Menu">
+          <Menu size={22} />
+        </button>
         <div className="topbar-breadcrumb">
           <span className="breadcrumb-home">Dashboard</span>
           <span className="breadcrumb-sep">/</span>

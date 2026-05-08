@@ -3,11 +3,13 @@ import { Helmet } from 'react-helmet-async';
 import { KeyRound, User, Mail, Phone, Shield } from 'lucide-react';
 import Sidebar from '../components/layout/Sidebar';
 import TopBar from '../components/layout/TopBar';
+import BottomNav from '../components/layout/BottomNav';
 import { useStudentSession } from '../data/studentStore';
 import './Profile.css';
 
 export default function Profile() {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const sessionStudent = useStudentSession();
 
   const [avatar, setAvatar] = useState('https://i.pravatar.cc/150?u=arka');
@@ -67,10 +69,10 @@ export default function Profile() {
         <title>My Profile | AJU ERP</title>
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
       
       <div className="main-content" style={{ marginLeft: collapsed ? 72 : 260 }}>
-        <TopBar collapsed={collapsed} />
+        <TopBar collapsed={collapsed} onMenuOpen={() => setMobileOpen(true)} />
 
         <div className="dashboard-content profile-page">
           <div className="profile-header">
@@ -206,6 +208,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
+      <BottomNav onMenuOpen={() => setMobileOpen(true)} />
     </div>
   );
 }

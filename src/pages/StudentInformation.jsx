@@ -3,6 +3,7 @@ import { User, MapPin, GraduationCap, Printer, Info, ClipboardList } from 'lucid
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from '../components/layout/Sidebar';
 import TopBar from '../components/layout/TopBar';
+import BottomNav from '../components/layout/BottomNav';
 import PersonalInfo from '../components/student-info/PersonalInfo';
 import AddressInfo from '../components/student-info/AddressInfo';
 import DASAInfo from '../components/student-info/DASAInfo';
@@ -13,6 +14,7 @@ import './StudentInformation.css';
 
 export default function StudentInformation() {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('personal');
   const offset = collapsed ? 72 : 260;
 
@@ -48,10 +50,10 @@ export default function StudentInformation() {
 
   return (
     <div className="layout-root">
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
       
       <div className="main-content" style={{ marginLeft: offset }}>
-        <TopBar collapsed={collapsed} />
+        <TopBar collapsed={collapsed} onMenuOpen={() => setMobileOpen(true)} />
 
         <div className="dashboard-content si-page-root">
           <div className="si-container-box">
@@ -116,6 +118,7 @@ export default function StudentInformation() {
           </div>
         </div>
       </div>
+      <BottomNav onMenuOpen={() => setMobileOpen(true)} />
     </div>
   );
 }

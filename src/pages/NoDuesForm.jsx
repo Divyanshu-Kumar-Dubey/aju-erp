@@ -3,11 +3,13 @@ import { Home, ChevronRight, FileText, Printer } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Sidebar from '../components/layout/Sidebar';
 import TopBar from '../components/layout/TopBar';
+import BottomNav from '../components/layout/BottomNav';
 import { useStudentSession } from '../data/studentStore';
 import './NoDuesForm.css';
 
 export default function NoDuesForm() {
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const offset = collapsed ? 72 : 260;
 
   const student = useStudentSession();
@@ -41,10 +43,10 @@ export default function NoDuesForm() {
 
   return (
     <div className="layout-root">
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
       
       <div className="main-content" style={{ marginLeft: offset }}>
-        <TopBar collapsed={collapsed} />
+        <TopBar collapsed={collapsed} onMenuOpen={() => setMobileOpen(true)} />
 
         <div className="ndf-page-root">
           {/* Breadcrumb */}
@@ -159,6 +161,7 @@ export default function NoDuesForm() {
           </motion.div>
         </div>
       </div>
+      <BottomNav onMenuOpen={() => setMobileOpen(true)} />
     </div>
   );
 }

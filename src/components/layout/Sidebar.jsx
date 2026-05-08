@@ -52,7 +52,7 @@ const navItems = [
   },
 ];
 
-export default function Sidebar({ collapsed, setCollapsed }) {
+export default function Sidebar({ collapsed, setCollapsed, mobileOpen, onClose }) {
   const [openMenus, setOpenMenus] = useState({});
   const navigate = useNavigate();
 
@@ -68,11 +68,15 @@ export default function Sidebar({ collapsed, setCollapsed }) {
   };
 
   return (
-    <motion.aside
-      className="sidebar"
-      animate={{ width: collapsed ? 72 : 260 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-    >
+    <>
+      {/* Overlay backdrop for mobile */}
+      {mobileOpen && <div className="sidebar-overlay" onClick={onClose} />}
+
+      <motion.aside
+        className={`sidebar ${mobileOpen ? 'mobile-open' : ''}`}
+        animate={{ width: collapsed ? 72 : 260 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      >
       {/* Header */}
       <div className="sidebar-header">
         <motion.div
@@ -92,7 +96,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
             </motion.div>
           )}
         </motion.div>
-        <button className="collapse-btn" onClick={() => setCollapsed(!collapsed)}>
+        <button className="collapse-btn" onClick={onClose || (() => setCollapsed(!collapsed))}>
           {collapsed ? <Menu size={18} /> : <X size={18} />}
         </button>
       </div>
@@ -185,5 +189,6 @@ export default function Sidebar({ collapsed, setCollapsed }) {
         )}
       </div>
     </motion.aside>
+    </>
   );
 }

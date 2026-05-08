@@ -274,3 +274,36 @@
   border-color: var(--brand-maroon);
   color: var(--brand-maroon);
 }
+
+/* =====================
+   MOBILE DRAWER OVERLAY
+   ===================== */
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* Sidebar becomes a full-height drawer sliding from the left */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    width: 280px !important; /* Always full width on mobile */
+    z-index: 1300;
+    box-shadow: 4px 0 40px rgba(0,0,0,0.2);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  /* Dark overlay behind the sidebar when open */
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1200;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+}

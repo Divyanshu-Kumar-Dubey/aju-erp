@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import Sidebar from '../components/layout/Sidebar';
 import TopBar from '../components/layout/TopBar';
+import BottomNav from '../components/layout/BottomNav';
 import { useStudentSession } from '../data/studentStore';
 import { Download, GraduationCap } from 'lucide-react';
 import './Result.css';
 
 export default function Result() {
   const [collapsed, setCollapsed] = useState(false);
-  // useStudentSession now uses Firestore onSnapshot — real-time updates
-  // are handled automatically. No manual event listeners needed.
+  const [mobileOpen, setMobileOpen] = useState(false);
   const student = useStudentSession();
   const offset = collapsed ? 72 : 260;
 
@@ -19,23 +19,24 @@ export default function Result() {
   if (!student) {
     return (
       <div className="layout-root">
-        <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
         <div className="main-content" style={{ marginLeft: offset }}>
-          <TopBar collapsed={collapsed} />
+          <TopBar collapsed={collapsed} onMenuOpen={() => setMobileOpen(true)} />
           <div style={{ padding: '2rem', color: '#666' }}>
             Loading results… please wait.
           </div>
         </div>
+        <BottomNav onMenuOpen={() => setMobileOpen(true)} />
       </div>
     );
   }
 
   return (
     <div className="layout-root">
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} mobileOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
       
       <div className="main-content" style={{ marginLeft: offset }}>
-        <TopBar collapsed={collapsed} />
+        <TopBar collapsed={collapsed} onMenuOpen={() => setMobileOpen(true)} />
 
         <div className="result-page-wrapper">
           <div className="result-header">
@@ -133,6 +134,7 @@ export default function Result() {
           </div>
         </div>
       </div>
+      <BottomNav onMenuOpen={() => setMobileOpen(true)} />
     </div>
   );
 }

@@ -1,0 +1,78 @@
+/* =====================
+   BOTTOM NAVIGATION BAR — Mobile Only
+   ===================== */
+.bottom-nav {
+  display: none; /* Hidden on desktop */
+}
+
+@media (max-width: 768px) {
+  .bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: var(--bg-surface);
+    border-top: 1.5px solid var(--border-color);
+    box-shadow: 0 -4px 20px rgba(26, 35, 126, 0.08);
+    z-index: 1200;
+    /* Support home indicator on iPhones / Android gesture bar */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    font-family: inherit;
+    transition: color 0.2s ease;
+    position: relative;
+    padding: 8px 0;
+  }
+
+  .bottom-nav-item.active {
+    color: var(--brand-navy);
+  }
+
+  .bottom-nav-item.active .bottom-nav-icon {
+    background: var(--brand-navy-pale);
+    color: var(--brand-navy);
+    border-radius: 16px;
+    padding: 4px 14px;
+  }
+
+  .bottom-nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .bottom-nav-label {
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  /* Notif dot on bottom nav bell */
+  .bottom-nav-notif {
+    position: absolute;
+    top: 6px;
+    right: calc(50% - 18px);
+    width: 7px;
+    height: 7px;
+    background: var(--brand-maroon);
+    border-radius: 50%;
+    border: 1.5px solid var(--bg-surface);
+  }
+}
